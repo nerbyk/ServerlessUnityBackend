@@ -1,0 +1,16 @@
+require 'rake'
+require 'dotenv/load'
+
+environment = ENV['env'] || 'development'
+Dotenv.load(".env.#{environment}")
+
+task :execute_job, [:file_name] do |t, args|
+  job_name = args[:file_name]
+  job_path = File.expand_path("jobs/#{job_name}/main.rb")
+  
+  raise "File not found" unless File.exist?(job_path)
+
+  $LOAD_PATH.unshift(File.expand_path('lib'))
+  
+  load job_path
+end

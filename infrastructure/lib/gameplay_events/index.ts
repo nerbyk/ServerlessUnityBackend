@@ -1,0 +1,1 @@
+export { UserSignupConfirmedEvent } from "./user_signup_confirmed/infrastructure";

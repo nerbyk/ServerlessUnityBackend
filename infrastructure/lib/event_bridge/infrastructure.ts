@@ -21,26 +21,5 @@ export class EventBusik extends Construct {
       actions: ['events:PutEvents'],
       resources: [this.gameplayEventsBus.eventBusArn]
     });
-
-    this.createNewUserRule(this.gameplayEventsBus)
-  }
-
-  private createNewUserRule(eventBus: EventBus) {
-    const newUserLambda = new Function(this, 'SetupNewUserJob', {
-      runtime: Runtime.RUBY_3_2,
-      timeout: Duration.seconds(10),
-      handler: 'main.handler',
-      code: Code.fromAsset('../gameplay_backend/new_user'),
-      logRetention: RetentionDays.ONE_WEEK
-    })
-
-    new Rule(this, 'UserSignUpConfirmedRule', {
-      description: 'When a user signs up and confirms their email, setup game data',
-      eventPattern: {
-        source: ['custom.cognito'],
-        detailType: ['USER_SIGN_UP_CONFIRMED']
-      },
-      eventBus
-    }).addTarget(new LambdaFunction(newUserLambda))
   }
 }

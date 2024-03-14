@@ -1,5 +1,5 @@
 import { Construct } from 'constructs';
-import { UserPool, UserPoolClient, UserPoolOperation, AccountRecovery, VerificationEmailStyle } from 'aws-cdk-lib/aws-cognito';
+import { UserPool, UserPoolClient, UserPoolOperation, AccountRecovery, VerificationEmailStyle, UserPoolDomain } from 'aws-cdk-lib/aws-cognito';
 import { StringParameter } from 'aws-cdk-lib/aws-ssm';
 import { Code, Function, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { Stack } from 'aws-cdk-lib';
@@ -7,18 +7,22 @@ import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { EventBusik } from '../event_bridge/infrastructure';
 
 type CognitoAuthProps = {
-  event_bridge: EventBusik;
+  gameplayEB: EventBusik;
 };
 
 export class CognitoAuth extends Construct {
   readonly userPool: UserPool;
   readonly userPoolName: string;
+  readonly userPoolDomain: UserPoolDomain;
   readonly userPoolClient: UserPoolClient;
 
   constructor(scope: Construct, id: string, props: CognitoAuthProps) {
     super(scope, id);
 
+    const { gameplayEB } = props;
+
     this.userPool =  new UserPool(this, `CognitoUserPool`, {
+      // userPoolName: Stack.of(this).stackName + 'UserPool',
       selfSignUpEnabled: true,
       signInAliases: {
         email: true,
@@ -51,14 +55,20 @@ export class CognitoAuth extends Construct {
       disableOAuth: true
     });
 
+    this.userPoolDomain = this.userPool.addDomain('CognitoDomain', {
+      cognitoDomain: {
+        domainPrefix: 'gameplay'
+      }
+    });
+
     this.userPool.addTrigger(UserPoolOperation.POST_CONFIRMATION, new Function(this, 'SignUpConfirmedEventProxy', 
       {
         runtime: Runtime.RUBY_3_2,
         handler: 'main.handler',
         code: Code.fromAsset(`${__dirname}/lambda/post_signup`, {exclude: ["**", "!main.rb"]}),
-        initialPolicy: [props.event_bridge.putEventsPolicy],
+        initialPolicy: [gameplayEB.putEventsPolicy],
         environment: {
-          EVENT_BUS_NAME: props.event_bridge.gameplayEventsBus.eventBusName
+          EVENT_BUS_NAME: gameplayEB.gameplayEventsBus.eventBusName
         }
       }
     ));

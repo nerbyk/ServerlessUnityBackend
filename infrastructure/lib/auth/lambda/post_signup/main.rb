@@ -37,5 +37,5 @@ def handler(event:, context: nil)
     LOGGER.info "EventBridge response: #{response}"
   end
 
-  {}
+  event
 end
