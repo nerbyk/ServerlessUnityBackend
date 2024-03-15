@@ -2,9 +2,7 @@ require 'logger'
 require 'securerandom'
 require 'aws-sdk-s3'
 
-require 'models/entity'
 require 'models/user'
-require 'models/item'
 
 STATICS_S3_BUCKET_NAME = ENV.fetch('STATICS_S3_BUCKET_NAME')
 S3_CLIENT = Aws::S3::Client.new
@@ -49,7 +47,7 @@ def handler(event:, context:)
     end
   end
 
-  User.create(user_id: event_user_id, entities: entities_map ) unless User.exists?(user_id: user_id)
+  User.create(user_id: user_id, entities: entities_map ) unless User.exists?(user_id: user_id)
 
   { statusCode: 200, body: "OK" }
 rescue StandardError => e

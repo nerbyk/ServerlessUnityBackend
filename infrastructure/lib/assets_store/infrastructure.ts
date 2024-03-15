@@ -5,7 +5,7 @@ import { Construct } from 'constructs';
 
 export class GameplayStaticsStore extends Construct {
   readonly staticsStore: Bucket;
-  
+
   constructor(scope: Construct, id: string) {
     super(scope, id);
 

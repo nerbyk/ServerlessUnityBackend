@@ -5,7 +5,7 @@ import { CognitoAuth } from './auth/infrastructure';
 import { EventBusik } from './event_bridge/infrastructure';
 import { GameplayDDB } from './db/infrastructure';
 import { GameplayStaticsStore } from './assets_store/infrastructure';
-import * as EventJobs from './gameplay_events'
+import { EventStore, EventJobBuilder, EventJobs } from './gameplay_events'
 
 export class BusinessFarmCdkStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -13,15 +13,18 @@ export class BusinessFarmCdkStack extends Stack {
 
     const eventBridge = new EventBusik(this, `EventBus`);
     const staticStore = new GameplayStaticsStore(this, `GameplayStaticsStore`)
-    const auth = new CognitoAuth(this, `CognitoAuth`, { 
-      gameplayEB: eventBridge
-    });
-    const db = new GameplayDDB(this, `GameplayDDB`);
+    const gameplayDDB = new GameplayDDB(this, `GameplayDDB`);
 
-    new EventJobs.UserSignupConfirmedEvent(this, `SetupNewUserJob`, {
-      gameplayEB:  eventBridge,
-      gameplayDDB: db,
-      gameplayStatics: staticStore
-    })
+    new CognitoAuth(this, `CognitoAuth`, { gameplayEB: eventBridge });
+
+    this.buildEventJobs(eventBridge, gameplayDDB, staticStore);
+  }
+
+  private buildEventJobs(gameplayEB: EventBusik, gameplayDDB: GameplayDDB, gameplayStatics: GameplayStaticsStore) {
+    const setupNewUserEventJob = new EventJobs.SetupNewUserJob(this, "SetupNewUserJob", { gameplayDDB, gameplayStatics })
+
+    EventJobBuilder
+      .new(setupNewUserEventJob, gameplayEB.gameplayEventsBus)
+      .addTrigger("UserSignUpConfirmedJobTrigger", EventStore.UserSignupConfirmedRuleProps);
   }
 }

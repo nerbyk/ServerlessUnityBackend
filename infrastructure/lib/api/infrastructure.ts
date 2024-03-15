@@ -15,10 +15,8 @@ export class WebSocketApi extends Construct {
 
   constructor(scope: Construct, id: string, props: WebSocketApiProps) {
     super(scope, id);
-    
-    this.api = new apigateway.WebSocketApi(this, 'Api')
 
-  
+    this.api = new apigateway.WebSocketApi(this, 'Api')
   }
 }
 

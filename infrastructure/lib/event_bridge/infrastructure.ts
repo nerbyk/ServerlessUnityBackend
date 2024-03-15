@@ -1,9 +1,7 @@
-import { Duration, Stack } from 'aws-cdk-lib';
-import { EventBus, Rule }from 'aws-cdk-lib/aws-events';
+import { EventBus, Rule, RuleProps }from 'aws-cdk-lib/aws-events';
 import { LambdaFunction } from 'aws-cdk-lib/aws-events-targets';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
-import { Code, Runtime, Function } from 'aws-cdk-lib/aws-lambda';
-import { RetentionDays } from 'aws-cdk-lib/aws-logs';
+import { Function } from 'aws-cdk-lib/aws-lambda';
 import { Construct } from 'constructs';
 
 export class EventBusik extends Construct {
@@ -21,5 +19,10 @@ export class EventBusik extends Construct {
       actions: ['events:PutEvents'],
       resources: [this.gameplayEventsBus.eventBusArn]
     });
+  }
+
+  public addTrigger(id: string, ruleProps: RuleProps, target: Function) {
+    new Rule(this, id, { ...ruleProps, eventBus: this.gameplayEventsBus })
+      .addTarget(new LambdaFunction(target));
   }
 }

@@ -61,7 +61,7 @@ export class CognitoAuth extends Construct {
       }
     });
 
-    this.userPool.addTrigger(UserPoolOperation.POST_CONFIRMATION, new Function(this, 'SignUpConfirmedEventProxy', 
+    this.userPool.addTrigger(UserPoolOperation.POST_CONFIRMATION, new Function(this, 'SignUpConfirmedEventProxy',
       {
         runtime: Runtime.RUBY_3_2,
         handler: 'main.handler',
