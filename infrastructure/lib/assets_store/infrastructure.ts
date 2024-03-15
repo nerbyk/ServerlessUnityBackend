@@ -11,6 +11,7 @@ export class GameplayStaticsStore extends Construct {
 
     this.staticsStore = new Bucket(this, 'GameplayStaticsBucket', {
       versioned: true, // Enable versioning for the bucket
+      bucketName: cdk.Stack.of(this).stackName.toLowerCase() + '-statics',
     });
 
     new BucketDeployment(this, "DeployGameplayStatics", {
@@ -18,6 +19,10 @@ export class GameplayStaticsStore extends Construct {
       sources: [
         Source.asset('vendor/gameplay_backend/assets'),
       ],
+    })
+
+    new cdk.CfnOutput(this, 'StaticsBucketName', {
+      value: this.staticsStore.bucketName,
     })
   }
 }

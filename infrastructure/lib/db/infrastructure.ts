@@ -1,3 +1,4 @@
+import { CfnOutput, Stack } from 'aws-cdk-lib';
 import { Table, AttributeType, ProjectionType } from 'aws-cdk-lib/aws-dynamodb';
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
@@ -21,21 +22,31 @@ export class GameplayDDB extends Construct {
 
     this.tables = this.setup_tables();
     this.policies = this.setup_policies();
+
+    Object.values(this.tables).forEach(table => {
+      const outputId = `${table.tableName}Output`.replace(/[^a-zA-Z0-9]/g, '');
+      new CfnOutput(this, outputId, {
+        value: table.tableName
+      });
+    });
   }
 
   private setup_tables(): GameplayDDBTables {
     const users = new Table(this, 'Users', {
       partitionKey: { name: 'user_id', type: AttributeType.STRING },
+      tableName: Stack.of(this).stackName + '-Users',
     });
 
     const entitiesReceipts = new Table(this, 'Receipts', {
       partitionKey: { name: 'guid', type: AttributeType.STRING },
       sortKey: { name: 'entity_guid', type: AttributeType.STRING },
+      tableName: Stack.of(this).stackName + '-Receipts',
     });
 
     const items = new Table(this, 'UserItems', {
       partitionKey: { name: 'guid', type: AttributeType.STRING },
       sortKey: { name: 'user_id', type: AttributeType.STRING },
+      tableName: Stack.of(this).stackName + '-UserItems',
     });
 
     return { users, entitiesReceipts, items }

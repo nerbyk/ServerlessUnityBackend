@@ -22,7 +22,7 @@ export class CognitoAuth extends Construct {
     const { gameplayEB } = props;
 
     this.userPool =  new UserPool(this, `CognitoUserPool`, {
-      // userPoolName: Stack.of(this).stackName + 'UserPool',
+      userPoolName: Stack.of(this).stackName + 'UserPool',
       selfSignUpEnabled: true,
       signInAliases: {
         email: true,
