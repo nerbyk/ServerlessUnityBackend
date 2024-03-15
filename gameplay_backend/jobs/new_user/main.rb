@@ -30,24 +30,28 @@ DEFAULT_ITEMS_MAPPING = JSON.parse(
 ENTITY_MAP_SIZE = 100
 LOGGER = Logger.new($stdout).freeze
 
-def handler(event:, context:)
-  LOGGER.info "Event received: %s" % JSON.pretty_generate(event)
-
-  user_id = JSON.parse(event['detail']).dig('userName')
-  entities_map = Array.new(ENTITY_MAP_SIZE) { Array.new(ENTITY_MAP_SIZE) { { type: nil, guid: nil } } }
+def build_entities_default_tilemap
+  entities = Array.new(ENTITY_MAP_SIZE) { Array.new(ENTITY_MAP_SIZE) { { type: nil, guid: nil } } }
 
   DEFAULT_ENTITY_MAPPING.each do |entity|
     guid = SecureRandom.uuid
   
     entity[:x].each do |x|
       entity[:y].each do |y|
-        entities_map[x - 1][y - 1][:type] = entity[:type]
-        entities_map[x - 1][y - 1][:guid] = guid
+        entities[x - 1][y - 1][:type] = entity[:type]
+        entities[x - 1][y - 1][:guid] = guid
       end
     end
   end
+end
 
-  User.create(user_id: user_id, entities: entities_map ) unless User.exists?(user_id: user_id)
+def handler(event:, context:)
+  LOGGER.info "Event received: %s" % JSON.pretty_generate(event)
+
+  user_id = event.dig('detail', 'userName')
+  entities = build_entities_default_tilemap()
+
+  User.create(user_id:, entities:).tap { |u| LOGGER.info "User created: %s" % u.inspect }
 
   { statusCode: 200, body: "OK" }
 rescue StandardError => e

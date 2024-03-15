@@ -57,7 +57,7 @@ export class CognitoAuth extends Construct {
 
     this.userPoolDomain = this.userPool.addDomain('CognitoDomain', {
       cognitoDomain: {
-        domainPrefix: 'gameplay'
+        domainPrefix: Stack.of(this).stackName.toLowerCase() + '-authdomain'
       }
     });
 

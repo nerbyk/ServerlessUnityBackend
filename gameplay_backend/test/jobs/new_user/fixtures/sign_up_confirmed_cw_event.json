@@ -1,0 +1,31 @@
+{
+  "version": "0",
+  "id": "pupa-i-lupa-prishli-za-zerplatoy",
+  "detail-type": "USER_SIGN_UP_CONFIRMED",
+  "source": "custom.cognito",
+  "account": "12345",
+  "time": "2024-03-15T09:13:52Z",
+  "region": "eu-central-1",
+  "resources": [],
+  "detail": {
+      "version": "1",
+      "region": "eu-central-1",
+      "userPoolId": "eu-central-1_6LolKek",
+      "userName": "pupa-i-lupa-prishli-za-zerplatoy",
+      "callerContext": {
+          "awsSdkVersion": "aws-sdk-unknown-unknown",
+          "clientId": "no-v-buhgalterii-vse-pereputali"
+      },
+      "triggerSource": "PostConfirmation_ConfirmSignUp",
+      "request": {
+          "userAttributes": {
+              "sub": "i-lupa-poluchila-za-pupu-a-pupa-poluchil-za-lupu",
+              "email_verified": "true",
+              "cognito:user_status": "CONFIRMED",
+              "cognito:email_alias": "pupa@gmail.com",
+              "email": "pupa@gmail.com"
+          }
+      },
+      "response": {}
+  }
+}

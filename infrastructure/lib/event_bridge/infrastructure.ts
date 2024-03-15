@@ -1,3 +1,4 @@
+import { Stack } from 'aws-cdk-lib';
 import { EventBus, Rule, RuleProps }from 'aws-cdk-lib/aws-events';
 import { LambdaFunction } from 'aws-cdk-lib/aws-events-targets';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
@@ -12,17 +13,12 @@ export class EventBusik extends Construct {
     super(scope, id);
 
     this.gameplayEventsBus = new EventBus(this, 'EventBridge', {
-      eventBusName: "GameplayEvents"
+      eventBusName: Stack.of(this).stackName + 'GameplayEvents'
     })
 
     this.putEventsPolicy = new PolicyStatement({
       actions: ['events:PutEvents'],
       resources: [this.gameplayEventsBus.eventBusArn]
     });
-  }
-
-  public addTrigger(id: string, ruleProps: RuleProps, target: Function) {
-    new Rule(this, id, { ...ruleProps, eventBus: this.gameplayEventsBus })
-      .addTarget(new LambdaFunction(target));
   }
 }
