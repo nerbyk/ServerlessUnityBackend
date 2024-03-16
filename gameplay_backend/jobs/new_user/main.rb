@@ -1,11 +1,7 @@
-require 'logger'
 require 'securerandom'
-require 'aws-sdk-s3'
 require 'config'
-require 'models/user'
 
-STATICS_S3_BUCKET_NAME = ENV.fetch('STATICS_S3_BUCKET_NAME')
-S3_CLIENT = Aws::S3::Client.new
+raise "STATICS_S3_BUCKET_NAME is not set" unless STATICS_S3_BUCKET_NAME
 
 DEFAULT_ENTITY_MAPPING_OPTIONS = {
   bucket: STATICS_S3_BUCKET_NAME,
@@ -28,7 +24,6 @@ DEFAULT_ITEMS_MAPPING = JSON.parse(
 ).freeze 
 
 ENTITY_MAP_SIZE = 100
-LOGGER = Logger.new($stdout).freeze
 
 def build_entities_default_tilemap
   entities = Array.new(ENTITY_MAP_SIZE) { Array.new(ENTITY_MAP_SIZE) { { type: nil, guid: nil } } }
