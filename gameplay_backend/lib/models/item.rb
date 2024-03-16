@@ -1,5 +1,3 @@
-require_relative 'base_model'
-
 class Item
   include Dynamoid::Document
 

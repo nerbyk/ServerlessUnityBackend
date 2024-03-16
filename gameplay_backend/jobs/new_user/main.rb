@@ -1,7 +1,7 @@
 require 'logger'
 require 'securerandom'
 require 'aws-sdk-s3'
-
+require 'config'
 require 'models/user'
 
 STATICS_S3_BUCKET_NAME = ENV.fetch('STATICS_S3_BUCKET_NAME')
@@ -38,11 +38,13 @@ def build_entities_default_tilemap
   
     entity[:x].each do |x|
       entity[:y].each do |y|
-        entities[x - 1][y - 1][:type] = entity[:type]
-        entities[x - 1][y - 1][:guid] = guid
+        entities[x][y][:type] = entity[:type]
+        entities[x][y][:guid] = guid
       end
     end
   end
+
+  entities
 end
 
 def handler(event:, context:)

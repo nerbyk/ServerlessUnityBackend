@@ -1,5 +1,3 @@
-require_relative 'base_model'
-
 class Receipt
   include Dynamoid::Document
 

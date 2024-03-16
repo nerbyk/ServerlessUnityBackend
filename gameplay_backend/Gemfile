@@ -9,8 +9,10 @@ group :development do
 end
 
 group :test do
-  gem "minitest"
-  gem "minitest-reporters"
+  gem 'minitest', '~> 5.8'
+  gem 'minitest-rg', '~> 5.2'
+  gem 'minitest-hooks', '~> 1.5'
+  gem 'minitest-reporters', '~> 1.1'
   gem "mocha"
 end
 

@@ -1,6 +1,11 @@
 require "bundler/setup"
-require "minitest/autorun"
-require "minitest/reporters"
+
+require 'minitest'
+require 'minitest/autorun'
+require 'minitest/rg'
+require 'minitest/hooks/default'
+require 'minitest/reporters'
+
 require "dotenv"
 
 Dotenv.load(".env.test")

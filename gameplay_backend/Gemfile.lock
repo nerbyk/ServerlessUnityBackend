@@ -48,11 +48,15 @@ GEM
       concurrent-ruby (~> 1.0)
     jmespath (1.6.2)
     minitest (5.22.3)
+    minitest-hooks (1.5.1)
+      minitest (> 5.3)
     minitest-reporters (1.6.1)
       ansi
       builder
       minitest (>= 5.0)
       ruby-progressbar
+    minitest-rg (5.3.0)
+      minitest (~> 5.0)
     mocha (2.1.0)
       ruby2_keywords (>= 0.0.5)
     mutex_m (0.2.0)
@@ -73,8 +77,10 @@ DEPENDENCIES
   aws-sdk-s3
   dotenv
   dynamoid
-  minitest
-  minitest-reporters
+  minitest (~> 5.8)
+  minitest-hooks (~> 1.5)
+  minitest-reporters (~> 1.1)
+  minitest-rg (~> 5.2)
   mocha
   nokogiri
   rake
