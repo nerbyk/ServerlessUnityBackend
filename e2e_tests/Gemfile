@@ -1,0 +1,17 @@
+source 'https://rubygems.org'
+
+gem 'rspec'
+gem 'rspec-core'
+gem 'rspec-expectations'
+gem 'rspec-mocks'
+gem 'rspec-support'
+gem 'dotenv'
+
+gem 'aws-sdk-s3'
+gem 'nokogiri'
+
+
+gem 'aws-sdk-dynamodb'
+gem 'aws-sdk-eventbridge'
+gem 'aws-sdk-ssm'
+gem 'aws-sdk-cognitoidentityprovider'

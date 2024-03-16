@@ -23,7 +23,7 @@ DEFAULT_ITEMS_MAPPING = JSON.parse(
   symbolize_names: true
 ).freeze 
 
-ENTITY_MAP_SIZE = 100
+ENTITY_MAP_SIZE = 101
 
 def build_entities_default_tilemap
   entities = Array.new(ENTITY_MAP_SIZE) { Array.new(ENTITY_MAP_SIZE) { { type: nil, guid: nil } } }
