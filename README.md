@@ -1,3 +1,3 @@
 # Architecture
 
-![Architecture Dia](architecture_diagram_v1.png)
+![Architecture Dia](architecture_diagram_v2.png)
