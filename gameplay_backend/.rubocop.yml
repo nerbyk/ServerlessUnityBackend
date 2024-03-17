@@ -1,0 +1,39 @@
+inherit_gem:
+  standard: config/base.yml
+
+require:
+  - rubocop-performance
+  - rubocop-rake
+  - standard
+
+AllCops:
+  TargetRubyVersion: 3.2
+  SuggestExtensions: false
+  Exclude:
+    - 'test/**/*'
+    - '.bundle/**/*'
+    - 'vendor/**/*'
+
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+
+Style/StringLiteralsInInterpolation:
+  EnforcedStyle: single_quotes
+
+Layout/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: space
+
+Performance/RedundantMerge:
+  Enabled: false
+
+Style/SafeNavigation:
+  Enabled: false
+
+Layout/SpaceInLambdaLiteral:
+  EnforcedStyle: require_space
+
+Style/OptionalArguments:
+  Enabled: false
+
+Layout/EmptyLineBetweenDefs:
+  AllowAdjacentOneLineDefs: true

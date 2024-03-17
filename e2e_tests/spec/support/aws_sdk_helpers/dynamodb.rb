@@ -11,16 +11,15 @@ module AwsSdkHelpers
       }
     }
 
-
     def self.delete(table, pk_value)
       SCHEMAS.fetch(table) => { table_name:, key: }
-      
+
       Client.delete_item(table_name:, key: { key => pk_value })
     end
 
     def self.find(table, by:)
       SCHEMAS.fetch(table) => { table_name:, key: }
-      
+
       Client.get_item(table_name:, key: { key => by })
     end
   end

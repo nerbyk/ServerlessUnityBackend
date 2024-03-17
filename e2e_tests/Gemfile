@@ -5,11 +5,16 @@ gem 'rspec-core'
 gem 'rspec-expectations'
 gem 'rspec-mocks'
 gem 'rspec-support'
+
 gem 'dotenv'
+
+gem 'rubocop', require: false
+gem 'rubocop-rake', require: false
+gem 'rubocop-performance', require: false
+gem 'standard', require: false
 
 gem 'aws-sdk-s3'
 gem 'nokogiri'
-
 
 gem 'aws-sdk-dynamodb'
 gem 'aws-sdk-eventbridge'

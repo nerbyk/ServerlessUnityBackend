@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'dynamoid'
 
 Dynamoid.configure do |config|
@@ -13,7 +15,7 @@ require 'models/user' if ENV['USERS_TABLE_NAME']
 require 'models/receipt' if ENV['ENTITY_RECEIPTS_TABLE_NAME']
 require 'models/item' if ENV['ITEMS_TABLE_NAME']
 
-if STATICS_S3_BUCKET_NAME = ENV['STATICS_S3_BUCKET_NAME']
+if (STATICS_S3_BUCKET_NAME = ENV['STATICS_S3_BUCKET_NAME'])
   require 'aws-sdk-s3'
 
   S3_CLIENT = Aws::S3::Client.new

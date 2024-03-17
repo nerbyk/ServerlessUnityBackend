@@ -1,11 +1,10 @@
 require_relative 'cloud_watch'
 require 'aws-sdk-eventbridge'
 
-
 module AwsSdkHelpers
   class EventBus
     Client = Aws::EventBridge::Client.new
-    GAMEPLAY_EVENTS_CW_LOG_GROUP_NAME = ENV['CDK_STACK_NAME'] + "GameplayEventsLogGroup"
+    GAMEPLAY_EVENTS_CW_LOG_GROUP_NAME = ENV['CDK_STACK_NAME'] + 'GameplayEventsLogGroup'
 
     def self.gameplay_events
       CloudWatch.logs(GAMEPLAY_EVENTS_CW_LOG_GROUP_NAME)

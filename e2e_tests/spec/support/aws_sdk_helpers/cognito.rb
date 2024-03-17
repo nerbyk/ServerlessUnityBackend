@@ -30,7 +30,7 @@ module AwsSdkHelpers
         user_attributes: [
           { name: 'email', value: email }
         ],
-        validation_data: code.nil? ? [] : [ { name: 'confirmationCode', value: code } ]
+        validation_data: code.nil? ? [] : [{ name: 'confirmationCode', value: code }]
       })
     rescue Aws::CognitoIdentityProvider::Errors::UsernameExistsException
       delete_user(email)
@@ -43,7 +43,7 @@ module AwsSdkHelpers
           user_pool_id: USER_POOL_ID,
           username: username
         })
-      else 
+      else
         Client.confirm_sign_up({
           client_id: USER_POOL_CLIENT_ID,
           username: username,

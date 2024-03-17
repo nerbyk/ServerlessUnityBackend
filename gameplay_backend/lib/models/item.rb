@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Item
   include Dynamoid::Document
 
@@ -8,4 +10,3 @@ class Item
 
   range :user_id, :string
 end
-

@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 require 'rake'
-require "rake/testtask"
+require 'rake/testtask'
 require 'dotenv/load'
 
 JOB_DIRS = Dir.glob('jobs/*')
@@ -7,20 +9,20 @@ JOB_DIRS = Dir.glob('jobs/*')
 environment = ENV['env'] || 'development'
 Dotenv.load(".env.#{environment}")
 
-task :execute_job, [:file_name] do |t, args|
+task :execute_job, [:file_name] do |_t, args|
   job_name = args[:file_name]
   job_path = File.expand_path("jobs/#{job_name}/main.rb")
-  
-  raise "File not found" unless File.exist?(job_path)
+
+  raise 'File not found' unless File.exist?(job_path)
 
   $LOAD_PATH.unshift(File.expand_path('lib'))
-  
+
   load job_path
 end
 
 JOB_DIRS.each do |job_dir|
   Rake::TestTask.new("test_job:#{File.basename(job_dir)}") do |t|
-    t.libs << "test"
+    t.libs << 'test'
     t.libs << job_dir
 
     t.test_files = FileList["test/#{job_dir}/*_test.rb"]

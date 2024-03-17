@@ -7,7 +7,7 @@ module AwsSdkHelpers
     Event = Data.define(:detail_type, :source, :detail) do
       def self.[](raw_event)
         parsed_event = JSON.parse(raw_event, symbolize_names: true)
-          .tap { |it| it[:detail_type] = it.delete(:"detail-type") }
+          .tap { |it| it[:detail_type] = it.delete(:'detail-type') }
 
         new(**parsed_event.slice(*members))
       end

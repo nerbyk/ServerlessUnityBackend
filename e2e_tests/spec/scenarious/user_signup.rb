@@ -7,25 +7,25 @@ describe 'User Registration' do
   before(:context) do
     @signup_response = AwsSdkHelpers::Cognito.singup_user(email: 'test_user@example.com', password: '12345678', code: '123456')
   end
-  
-  after(:context) do 
+
+  after(:context) do
     AwsSdkHelpers::Cognito.delete_user('test_user@example.com')
   end
 
-  context "when new user confirms their email" do
+  context 'when new user confirms their email' do
     let(:emitted_events) { gameplay_eb_events }
 
     before(:all) do
       expect(gameplay_eb_events).to be_empty
       expect(db_user).to be_nil
-      expect(cognito_user.user_status).to eq("UNCONFIRMED")
+      expect(cognito_user.user_status).to eq('UNCONFIRMED')
 
       AwsSdkHelpers::Cognito.confirm_user(username: 'test_user@example.com') # subject, not allowed by context hooks
 
       sleep(5)
     end
 
-    after(:all) do 
+    after(:all) do
       AwsSdkHelpers::DynamoDB.delete(:user, @signup_response.user_sub)
       AwsSdkHelpers::EventBus.gameplay_events_clean_up
     end
@@ -34,7 +34,7 @@ describe 'User Registration' do
     def gameplay_eb_events = AwsSdkHelpers::EventBus.gameplay_events
     def cognito_user = AwsSdkHelpers::Cognito.get_user('test_user@example.com')
 
-    it "should emit USER_SIGN_UP_CONFIRMED event" do
+    it 'should emit USER_SIGN_UP_CONFIRMED event' do
       expect(emitted_events.size).to eq(1)
 
       expect(emitted_events.first.detail[:triggerSource]).to eq('PostConfirmation_ConfirmSignUp')
@@ -42,12 +42,12 @@ describe 'User Registration' do
       expect(emitted_events.first.source).to eq('custom.cognito')
     end
 
-    it "should create new user in dynamodb" do
+    it 'should create new user in dynamodb' do
       expect(db_user).not_to be_nil
     end
 
-    it "should mark user as confirmed" do
-      expect(cognito_user.user_status).to eq("CONFIRMED")
+    it 'should mark user as confirmed' do
+      expect(cognito_user.user_status).to eq('CONFIRMED')
     end
   end
 end
