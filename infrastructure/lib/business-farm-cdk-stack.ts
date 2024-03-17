@@ -6,6 +6,7 @@ import { EventBusik } from './event_bridge/infrastructure';
 import { GameplayDDB } from './db/infrastructure';
 import { GameplayStaticsStore } from './assets_store/infrastructure';
 import { EventStore, EventJobBuilder, EventJobs } from './gameplay_events'
+import { WebhookApi } from './api/infrastructure';
 
 export class BusinessFarmCdkStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -14,8 +15,8 @@ export class BusinessFarmCdkStack extends Stack {
     const eventBridge = new EventBusik(this, `EventBus`);
     const staticStore = new GameplayStaticsStore(this, `GameplayStaticsStore`)
     const gameplayDDB = new GameplayDDB(this, `GameplayDDB`);
-
-    new CognitoAuth(this, `CognitoAuth`, { gameplayEB: eventBridge });
+    const auth = new CognitoAuth(this, `CognitoAuth`, { gameplayEB: eventBridge });
+    const websocketApi = new WebhookApi(this, `WebhookApi`, { auth, eventBridge });
 
     this.buildEventJobs(eventBridge, gameplayDDB, staticStore);
   }

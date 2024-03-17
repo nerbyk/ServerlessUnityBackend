@@ -12,6 +12,10 @@ describe 'User Registration' do
     AwsSdkHelpers::Cognito.delete_user('test_user@example.com')
   end
 
+  # TODO: Setup SES to receive emails and confirm the code flow
+  # context 'when new user signs up' do 
+  # end
+
   context 'when new user confirms their email' do
     let(:emitted_events) { gameplay_eb_events }
 
@@ -30,9 +34,9 @@ describe 'User Registration' do
       AwsSdkHelpers::EventBus.gameplay_events_clean_up
     end
 
-    def db_user = AwsSdkHelpers::DynamoDB.find(:user, by: @signup_response.user_sub).item
+    def db_user            = AwsSdkHelpers::DynamoDB.find(:user, by: @signup_response.user_sub).item
     def gameplay_eb_events = AwsSdkHelpers::EventBus.gameplay_events
-    def cognito_user = AwsSdkHelpers::Cognito.get_user('test_user@example.com')
+    def cognito_user       = AwsSdkHelpers::Cognito.get_user('test_user@example.com')
 
     it 'should emit USER_SIGN_UP_CONFIRMED event' do
       expect(emitted_events.size).to eq(1)
