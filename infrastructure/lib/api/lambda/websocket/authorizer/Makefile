@@ -1,8 +1,5 @@
 install_deps: 
 	bundle install --without development test --path vendor/bundle
 
-unit: 
-	bundle exec ruby -Ilib:test test/main_test.rb test/fixtures ./main.rb 
-
 default: install_deps
 	

@@ -9,6 +9,7 @@ import { Construct } from 'constructs';
 import path = require('path');
 import { EventBusik } from '../event_bridge/infrastructure';
 import { CognitoAuth } from '../auth/infrastructure';
+import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 
 interface WebSocketApiProps {
   auth: CognitoAuth;
@@ -37,29 +38,26 @@ export class WebhookApi extends Construct {
       indexName: "userIdIndex",
     });
 
-    const authorizerLambda = new NodejsFunction(this, "AuthorizerLambda", {
-      runtime: Runtime.NODEJS_LATEST,
-      entry: path.join(__dirname, "/lambda/websocket/authorizer/index.ts"),
+    const authorizerLambda = new Function(this, "AuthorizerLambda", {
+      runtime: Runtime.RUBY_3_2,
+      handler: "main.handler",
+      code: Code.fromAsset(`${__dirname}/lambda/websocket/authorizer`, {exclude: [".bundle", "Makefile"]}),
       environment: {
-        COGNITO_POOL_ID: userPool.userPoolId,
-        COGNITO_USER_POOL_CLIENT_ID: userPoolClient.userPoolClientId
+        COGNITO_USER_POOL_ID: userPool.userPoolId,
       },
-      bundling: {
-        externalModules: [],
-        nodeModules: ["aws-jwt-verify"]
-      },
-      handler: "handler"
+      logRetention: RetentionDays.ONE_DAY,
     });
 
     const dispatcherLambda = new Function(this, "DispatchLambda", {
       runtime: Runtime.RUBY_3_2,
-      code:Code.fromAsset(`${__dirname}/lambda/websocket/dispatch`, {exclude: ["Makefile", ".bundle"]}),
+      code:Code.fromAsset(`${__dirname}/lambda/websocket/dispatch`, {exclude: [".bundle", "Makefile", "test"]}),
       handler: "main.Dispatcher.handler",
       environment: {
         CONNECTION_TABLE_NAME: connectionTable.tableName,
         EVENT_BUS_NAME: gameplayEventsBus.eventBusName
       },
       initialPolicy: [eventBridge.putEventsPolicy],
+      logRetention: RetentionDays.ONE_DAY,
     });
     connectionTable.grantReadWriteData(dispatcherLambda);
     gameplayEventsBus.grantPutEventsTo(dispatcherLambda);
@@ -77,6 +75,7 @@ export class WebhookApi extends Construct {
     new WebSocketStage(this, 'Stage', {
       stageName: Stack.of(this).stackName + 'WebSocketStage',
       webSocketApi,
+      autoDeploy: true
     });
 
     this.api = webSocketApi;

@@ -38,6 +38,10 @@ GEM
     base64 (0.2.0)
     diff-lcs (1.5.1)
     dotenv (3.1.0)
+    eventmachine (1.2.7)
+    faye-websocket (0.11.3)
+      eventmachine (>= 0.12.0)
+      websocket-driver (>= 0.5.1)
     jmespath (1.6.2)
     json (2.7.1)
     jwt (2.8.1)
@@ -99,6 +103,9 @@ GEM
       lint_roller (~> 1.1)
       rubocop-performance (~> 1.20.2)
     unicode-display_width (2.5.0)
+    websocket-driver (0.7.6)
+      websocket-extensions (>= 0.1.0)
+    websocket-extensions (0.1.5)
 
 PLATFORMS
   x86_64-linux
@@ -112,6 +119,7 @@ DEPENDENCIES
   aws-sdk-s3
   aws-sdk-ssm
   dotenv
+  faye-websocket
   jwt
   nokogiri
   rspec

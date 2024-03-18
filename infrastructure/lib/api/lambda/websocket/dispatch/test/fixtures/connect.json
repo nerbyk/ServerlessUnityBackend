@@ -1,0 +1,61 @@
+{
+  "headers": {
+      "Authorization": "Bearer eyJraWQiOiJUMWhuUDBWTVNJSWxvOTNXS1wvcE10SWJrOU9EMTB5bnZYUXB3czdySWJtMD0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIxYzM1Njk0Yy0wOWZhLTRlMjEtYTNiZS05NjFkNWJiOWI2NWIiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC5ldS1jZW50cmFsLTEuYW1hem9uYXdzLmNvbVwvZXUtY2VudHJhbC0xX2RZUGRkbmlHMCIsImNvZ25pdG86dXNlcm5hbWUiOiIxYzM1Njk0Yy0wOWZhLTRlMjEtYTNiZS05NjFkNWJiOWI2NWIiLCJvcmlnaW5fanRpIjoiODcwMWNmM2YtYzU4MS00ZDhjLThiODQtMzhlNmY3NTg2NTVkIiwiYXVkIjoiM2h2OXB0YTFldjRzOWs0dDR0Zmo1djVhMjQiLCJldmVudF9pZCI6IjllNWRkNGI4LTE3M2EtNDMwZi04Y2FhLWZmYjNiMWRkNmZlMyIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNzEwNzY4MjI0LCJleHAiOjE3MTA3NzE4MjQsImlhdCI6MTcxMDc2ODIyNCwianRpIjoiMWNhMTgxZjItN2Y0MC00ZjRkLTgxZTYtY2U0N2I3ZWNiNjVlIiwiZW1haWwiOiJ0ZXN0QGV4YW1wbGUuY29tIn0.BLd80ozZ9DMupW3sn7x8xoifULEUjDoquGa-UA97LHc_xAMSbwFKqfSQdsvOyD1LwhPSrHc-t2yMEFdmE-_NRFwuEdVjzTMOGUvNwXfkEk4CTZySVwx_HSdnCaG1SCK4hdWQVixL8gSBaJFoqdcX6eFZadF5oFYFW8DW80uSHtSLa8XWiCyFgb-zjkarUBzYUv5pONffCv0Wc8957Xh2KECDkqIHSp_5Bb-toJiG5BpMD3Y_H-YCSQdxKdR6AAGe-bfL-7bbIL2XLMaU6pKAl14EOOp8FWTLGQ2lsvbK7E8U7QsiC_7aIDm9Sq2EQ6lH9bERUjbc7tdkgUT3IqzX7A",
+      "Host": "fesh5wnmvj.execute-api.eu-central-1.amazonaws.com",
+      "Sec-WebSocket-Key": "nPKHpr9NkJa7mPI6U9Bxlg==",
+      "Sec-WebSocket-Version": "13",
+      "X-Amzn-Trace-Id": "Root=1-65f84067-69040d012be5092e1042b273",
+      "X-Forwarded-For": "171.6.245.90",
+      "X-Forwarded-Port": "443",
+      "X-Forwarded-Proto": "https"
+  },
+  "multiValueHeaders": {
+      "Authorization": [
+          "Bearer eyJraWQiOiJUMWhuUDBWTVNJSWxvOTNXS1wvcE10SWJrOU9EMTB5bnZYUXB3czdySWJtMD0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIxYzM1Njk0Yy0wOWZhLTRlMjEtYTNiZS05NjFkNWJiOWI2NWIiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC5ldS1jZW50cmFsLTEuYW1hem9uYXdzLmNvbVwvZXUtY2VudHJhbC0xX2RZUGRkbmlHMCIsImNvZ25pdG86dXNlcm5hbWUiOiIxYzM1Njk0Yy0wOWZhLTRlMjEtYTNiZS05NjFkNWJiOWI2NWIiLCJvcmlnaW5fanRpIjoiODcwMWNmM2YtYzU4MS00ZDhjLThiODQtMzhlNmY3NTg2NTVkIiwiYXVkIjoiM2h2OXB0YTFldjRzOWs0dDR0Zmo1djVhMjQiLCJldmVudF9pZCI6IjllNWRkNGI4LTE3M2EtNDMwZi04Y2FhLWZmYjNiMWRkNmZlMyIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNzEwNzY4MjI0LCJleHAiOjE3MTA3NzE4MjQsImlhdCI6MTcxMDc2ODIyNCwianRpIjoiMWNhMTgxZjItN2Y0MC00ZjRkLTgxZTYtY2U0N2I3ZWNiNjVlIiwiZW1haWwiOiJ0ZXN0QGV4YW1wbGUuY29tIn0.BLd80ozZ9DMupW3sn7x8xoifULEUjDoquGa-UA97LHc_xAMSbwFKqfSQdsvOyD1LwhPSrHc-t2yMEFdmE-_NRFwuEdVjzTMOGUvNwXfkEk4CTZySVwx_HSdnCaG1SCK4hdWQVixL8gSBaJFoqdcX6eFZadF5oFYFW8DW80uSHtSLa8XWiCyFgb-zjkarUBzYUv5pONffCv0Wc8957Xh2KECDkqIHSp_5Bb-toJiG5BpMD3Y_H-YCSQdxKdR6AAGe-bfL-7bbIL2XLMaU6pKAl14EOOp8FWTLGQ2lsvbK7E8U7QsiC_7aIDm9Sq2EQ6lH9bERUjbc7tdkgUT3IqzX7A"
+      ],
+      "Host": [
+          "fesh5wnmvj.execute-api.eu-central-1.amazonaws.com"
+      ],
+      "Sec-WebSocket-Key": [
+          "nPKHpr9NkJa7mPI6U9Bxlg=="
+      ],
+      "Sec-WebSocket-Version": [
+          "13"
+      ],
+      "X-Amzn-Trace-Id": [
+          "Root=1-65f84067-69040d012be5092e1042b273"
+      ],
+      "X-Forwarded-For": [
+          "171.6.245.90"
+      ],
+      "X-Forwarded-Port": [
+          "443"
+      ],
+      "X-Forwarded-Proto": [
+          "https"
+      ]
+  },
+  "requestContext": {
+      "routeKey": "$connect",
+      "authorizer": {
+          "customerId": "1c35694c-09fa-4e21-a3be-961d5bb9b65b",
+          "principalId": "1c35694c-09fa-4e21-a3be-961d5bb9b65b",
+          "integrationLatency": 787
+      },
+      "eventType": "CONNECT",
+      "extendedRequestId": "U08AQG0kliAFZYQ=",
+      "requestTime": "18/Mar/2024:13:23:51 +0000",
+      "messageDirection": "IN",
+      "stage": "test--BusinessFarmWebSocketStage",
+      "connectedAt": 1710768231736,
+      "requestTimeEpoch": 1710768231738,
+      "identity": {
+          "sourceIp": "171.6.245.90"
+      },
+      "requestId": "U08AQG0kliAFZYQ=",
+      "domainName": "fesh5wnmvj.execute-api.eu-central-1.amazonaws.com",
+      "connectionId": "U08AQdzDliACGpw=",
+      "apiId": "fesh5wnmvj"
+  },
+  "isBase64Encoded": false
+}

@@ -3,8 +3,6 @@ require 'aws-cognito-srp'
 require 'jwt'
 require_relative 'ssm'
 
-ENV['CDK_STACK_NAME'] ||= 'test--BusinessFarm'
-
 module AwsSdkHelpers
   class Cognito
     Client = Aws::CognitoIdentityProvider::Client.new

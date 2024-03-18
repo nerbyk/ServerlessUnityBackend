@@ -23,6 +23,7 @@ GEM
       aws-eventstream (~> 1, >= 1.0.2)
     diff-lcs (1.5.1)
     jmespath (1.6.2)
+    minitest (5.22.3)
     nokogiri (1.16.3-x86_64-linux)
       racc (~> 1.4)
     paco (0.2.3)
@@ -51,6 +52,7 @@ DEPENDENCIES
   activefunction (~> 0.4.2)
   aws-sdk-dynamodb
   aws-sdk-eventbridge
+  minitest
   nokogiri
 
 BUNDLED WITH

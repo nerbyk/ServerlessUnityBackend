@@ -1,0 +1,15 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    base64 (0.2.0)
+    jwt (2.8.1)
+      base64
+
+PLATFORMS
+  x86_64-linux
+
+DEPENDENCIES
+  jwt
+
+BUNDLED WITH
+   2.4.19

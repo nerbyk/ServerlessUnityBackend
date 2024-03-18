@@ -8,6 +8,10 @@ module AwsSdkHelpers
       user: {
         table_name: ENV['USERS_TABLE_NAME'] || ENV.fetch('CDK_STACK_NAME') + '-Users',
         key: :user_id
+      },
+      connection: {
+        table_name: ENV.fetch('WEBSOCKET_CONNECTIONS_TABLE_NAME'),
+        key: :connection_id
       }
     }
 

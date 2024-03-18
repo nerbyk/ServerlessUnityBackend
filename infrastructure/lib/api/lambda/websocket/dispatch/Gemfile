@@ -11,3 +11,6 @@ group :development do
   gem 'nokogiri'
 end
 
+group :test do 
+  gem "minitest"
+end 
