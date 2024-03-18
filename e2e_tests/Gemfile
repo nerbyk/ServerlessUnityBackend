@@ -19,5 +19,9 @@ gem 'nokogiri'
 gem 'aws-sdk-dynamodb'
 gem 'aws-sdk-eventbridge'
 gem 'aws-sdk-ssm'
+
 gem 'aws-sdk-cognitoidentityprovider'
+gem 'aws-cognito-srp'
+gem 'jwt'
+
 gem 'aws-sdk-cloudwatchlogs'

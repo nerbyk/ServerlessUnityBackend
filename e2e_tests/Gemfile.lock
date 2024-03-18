@@ -2,6 +2,8 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.2)
+    aws-cognito-srp (0.6.0)
+      aws-sdk-cognitoidentityprovider
     aws-eventstream (1.3.0)
     aws-partitions (1.898.0)
     aws-sdk-cloudwatchlogs (1.79.0)
@@ -33,10 +35,13 @@ GEM
       aws-sigv4 (~> 1.1)
     aws-sigv4 (1.8.0)
       aws-eventstream (~> 1, >= 1.0.2)
+    base64 (0.2.0)
     diff-lcs (1.5.1)
     dotenv (3.1.0)
     jmespath (1.6.2)
     json (2.7.1)
+    jwt (2.8.1)
+      base64
     language_server-protocol (3.17.0.3)
     lint_roller (1.1.0)
     nokogiri (1.16.3-x86_64-linux)
@@ -99,6 +104,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  aws-cognito-srp
   aws-sdk-cloudwatchlogs
   aws-sdk-cognitoidentityprovider
   aws-sdk-dynamodb
@@ -106,6 +112,7 @@ DEPENDENCIES
   aws-sdk-s3
   aws-sdk-ssm
   dotenv
+  jwt
   nokogiri
   rspec
   rspec-core
