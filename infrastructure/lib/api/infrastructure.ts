@@ -18,6 +18,7 @@ interface WebSocketApiProps {
 
 export class WebhookApi extends Construct {
   readonly api: WebSocketApi;
+  readonly stage: WebSocketStage;
 
   constructor(scope: Construct, id: string, props: WebSocketApiProps) {
     super(scope, id);
@@ -41,7 +42,7 @@ export class WebhookApi extends Construct {
     const authorizerLambda = new Function(this, "AuthorizerLambda", {
       runtime: Runtime.RUBY_3_2,
       handler: "main.handler",
-      code: Code.fromAsset(`${__dirname}/lambda/websocket/authorizer`, {exclude: [".bundle", "Makefile"]}),
+      code: Code.fromAsset(`${__dirname}/lambda/authorizer`, {exclude: [".bundle", "Makefile"]}),
       environment: {
         COGNITO_USER_POOL_ID: userPool.userPoolId,
       },
@@ -50,7 +51,7 @@ export class WebhookApi extends Construct {
 
     const dispatcherLambda = new Function(this, "DispatchLambda", {
       runtime: Runtime.RUBY_3_2,
-      code:Code.fromAsset(`${__dirname}/lambda/websocket/dispatch`, {exclude: [".bundle", "Makefile", "test"]}),
+      code:Code.fromAsset(`${__dirname}/lambda/dispatch`, {exclude: [".bundle", "Makefile", "test"]}),
       handler: "main.Dispatcher.handler",
       environment: {
         CONNECTION_TABLE_NAME: connectionTable.tableName,
@@ -63,21 +64,20 @@ export class WebhookApi extends Construct {
     gameplayEventsBus.grantPutEventsTo(dispatcherLambda);
 
     const authorizer = new WebSocketLambdaAuthorizer('Authorizer', authorizerLambda);
-    const integration = new WebSocketLambdaIntegration("Integration", dispatcherLambda);
+    const integration = () => new WebSocketLambdaIntegration("Integration", dispatcherLambda);
 
     const webSocketApi = new WebSocketApi(this, 'Api', {
       apiName: Stack.of(this).stackName + 'WebSocketApi',
-      connectRouteOptions: { integration, authorizer },
-      defaultRouteOptions: { integration },
-      disconnectRouteOptions: { integration },
+      connectRouteOptions: { integration: integration(), authorizer },
+      defaultRouteOptions: { integration: integration() },
+      disconnectRouteOptions: { integration: integration() },
     })
 
-    new WebSocketStage(this, 'Stage', {
+    this.stage = new WebSocketStage(this, 'Stage', {
       stageName: Stack.of(this).stackName + 'WebSocketStage',
       webSocketApi,
       autoDeploy: true
     });
-
     this.api = webSocketApi;
   }
 }

@@ -15,6 +15,7 @@ end
 group :development, :test do
   gem 'aws-sdk-dynamodb'
   gem 'aws-sdk-s3'
+  gem 'aws-sdk-apigatewaymanagementapi'
   gem 'dotenv'
   gem 'nokogiri'
 

@@ -18,14 +18,20 @@ export class BusinessFarmCdkStack extends Stack {
     const auth = new CognitoAuth(this, `CognitoAuth`, { gameplayEB: eventBridge });
     const websocketApi = new WebhookApi(this, `WebhookApi`, { auth, eventBridge });
 
-    this.buildEventJobs(eventBridge, gameplayDDB, staticStore);
+    this.buildEventJobs(eventBridge, gameplayDDB, staticStore, websocketApi);
   }
 
-  private buildEventJobs(gameplayEB: EventBusik, gameplayDDB: GameplayDDB, gameplayStatics: GameplayStaticsStore) {
+  private buildEventJobs(gameplayEB: EventBusik, gameplayDDB: GameplayDDB, gameplayStatics: GameplayStaticsStore, gameplayWS: WebhookApi) {
     const setupNewUserEventJob = new EventJobs.SetupNewUserJob(this, "SetupNewUserJob", { gameplayDDB, gameplayStatics })
+    const getGameplayDataEventJob = new EventJobs.GetGameplayDataJob(this, "GetGameplayDataJob", { gameplayDDB, gameplayWS })
+
 
     EventJobBuilder
       .new(setupNewUserEventJob, gameplayEB.gameplayEventsBus)
       .addTrigger("UserSignUpConfirmedJobTrigger", EventStore.UserSignupConfirmedRuleProps);
+
+    EventJobBuilder
+      .new(getGameplayDataEventJob, gameplayEB.gameplayEventsBus)
+      .addTrigger("GameplayDataRequestedJobTrigger", EventStore.GetUserDataRuleProps);
   }
 }

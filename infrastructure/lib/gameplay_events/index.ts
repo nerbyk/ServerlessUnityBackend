@@ -8,9 +8,11 @@ export class EventJob extends Construct {
 }
 
 import { SetupNewUserJob } from "./user_signup_confirmed/infrastructure";
+import { GetGameplayDataJob } from "./get_user_data/infrastructure";
 
 export class EventJobs {
   static SetupNewUserJob = SetupNewUserJob;
+  static GetGameplayDataJob = GetGameplayDataJob;
 }
 
 export class EventJobBuilder {
@@ -44,6 +46,14 @@ export class EventStore {
     eventPattern: {
       source: ['custom.cognito'],
       detailType: ['USER_SIGN_UP_CONFIRMED'],
+    }
+  }
+
+  public static GetUserDataRuleProps: RuleProps = {
+    description: "Get user data",
+    eventPattern: {
+      source: ['custom.gameplay_backend'],
+      detailType: ['GET_USER_DATA'],
     }
   }
 }

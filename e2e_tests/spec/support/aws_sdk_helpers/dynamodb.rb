@@ -26,5 +26,11 @@ module AwsSdkHelpers
 
       Client.get_item(table_name:, key: { key => by })
     end
+
+    def self.find_by(table, key)
+      SCHEMAS.fetch(table) => { table_name: }
+
+      Client.get_item(table_name:, key:)
+    end
   end
 end

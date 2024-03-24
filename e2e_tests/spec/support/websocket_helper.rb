@@ -1,5 +1,6 @@
-require 'faye/websocket'
+require 'websocket-client-simple'
 require 'json'
+require 'delegate'
 
 class WebSocketHelper
   WS_URL = ENV.fetch('WEBSOCKET_URL')
@@ -7,22 +8,25 @@ class WebSocketHelper
   attr_reader :queue
 
   def initialize
-    @queue = Array.new
+    @queue = Queue.new
+    @ws = nil
   end
 
   def connect(jwt_token)
-    ws = Faye::WebSocket::Client.new(WS_URL, [], {
-      headers: { 'Authorization' => "Bearer #{jwt_token}"}
-    }) 
-  
-    ws.on :connect do 
-      ws.send({action: "$connect"}.to_json)
-    end
+    build_ws_client(jwt_token)
+  end
 
-    ws.on :message do |event|
-      @queue.push(event)
-    end
+  def build_ws_client(token)
+    WebSocket::Client::Simple.connect(WS_URL, {
+      headers: { 'Authorization' => "Bearer #{token}"}
+    }) do |ws|
+      ws.on :message do |msg|
+        @queue << JSON.parse(msg.data)
+      end
 
-    ws
+      ws.on :error do |err| 
+        @queue << { error: err.full_message }
+      end
+    end.tap { |it| it.instance_variable_set(:@queue, @queue) }
   end
 end

@@ -7,7 +7,7 @@ gem 'rspec-mocks'
 gem 'rspec-support'
 
 gem 'dotenv'
-gem 'faye-websocket'
+gem 'websocket-client-simple'
 
 gem 'rubocop', require: false
 gem 'rubocop-rake', require: false

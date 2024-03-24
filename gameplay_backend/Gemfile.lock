@@ -17,6 +17,9 @@ GEM
     ast (2.4.2)
     aws-eventstream (1.3.0)
     aws-partitions (1.896.0)
+    aws-sdk-apigatewaymanagementapi (1.42.0)
+      aws-sdk-core (~> 3, >= 3.191.0)
+      aws-sigv4 (~> 1.1)
     aws-sdk-core (3.191.3)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.651.0)
@@ -120,6 +123,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  aws-sdk-apigatewaymanagementapi
   aws-sdk-dynamodb
   aws-sdk-s3
   dotenv
