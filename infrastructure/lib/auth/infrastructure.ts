@@ -5,6 +5,7 @@ import { Code, Function, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { Stack } from 'aws-cdk-lib';
 import { PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { EventBusik } from '../event_bridge/infrastructure';
+import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 
 type CognitoAuthProps = {
   gameplayEB: EventBusik;
@@ -69,7 +70,8 @@ export class CognitoAuth extends Construct {
         initialPolicy: [gameplayEB.putEventsPolicy],
         environment: {
           EVENT_BUS_NAME: gameplayEB.gameplayEventsBus.eventBusName
-        }
+        },
+        logRetention: RetentionDays.ONE_DAY
       }
     ));
 

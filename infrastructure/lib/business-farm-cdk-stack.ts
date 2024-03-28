@@ -6,7 +6,11 @@ import { EventBusik } from './event_bridge/infrastructure';
 import { GameplayDDB } from './db/infrastructure';
 import { GameplayStaticsStore } from './assets_store/infrastructure';
 import { EventStore, EventJobBuilder, EventJobs } from './gameplay_events'
-import { WebhookApi } from './api/infrastructure';
+import { WebhookAndRestApi } from './api/infrastructure';
+import { Integration, IntegrationType, LambdaIntegration } from 'aws-cdk-lib/aws-apigateway';
+import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import * as openapix from '@alma-cdk/openapix';
+import path = require('path');
 
 export class BusinessFarmCdkStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -16,22 +20,18 @@ export class BusinessFarmCdkStack extends Stack {
     const staticStore = new GameplayStaticsStore(this, `GameplayStaticsStore`)
     const gameplayDDB = new GameplayDDB(this, `GameplayDDB`);
     const auth = new CognitoAuth(this, `CognitoAuth`, { gameplayEB: eventBridge });
-    const websocketApi = new WebhookApi(this, `WebhookApi`, { auth, eventBridge });
+    const api =  new WebhookAndRestApi(this, `WebhookApi`, { auth, eventBridge, restApiFunctions: {
+      getUserData: new EventJobs.GetGameplayDataJob(this, "GetUserDataJob", { gameplayDDB }).handler
+    } });
 
-    this.buildEventJobs(eventBridge, gameplayDDB, staticStore, websocketApi);
+    this.buildEventJobs(eventBridge, gameplayDDB, staticStore, api);
   }
 
-  private buildEventJobs(gameplayEB: EventBusik, gameplayDDB: GameplayDDB, gameplayStatics: GameplayStaticsStore, gameplayWS: WebhookApi) {
+  private buildEventJobs(gameplayEB: EventBusik, gameplayDDB: GameplayDDB, gameplayStatics: GameplayStaticsStore, gameplayWS: WebhookAndRestApi) {
     const setupNewUserEventJob = new EventJobs.SetupNewUserJob(this, "SetupNewUserJob", { gameplayDDB, gameplayStatics })
-    const getGameplayDataEventJob = new EventJobs.GetGameplayDataJob(this, "GetGameplayDataJob", { gameplayDDB, gameplayWS })
-
 
     EventJobBuilder
       .new(setupNewUserEventJob, gameplayEB.gameplayEventsBus)
       .addTrigger("UserSignUpConfirmedJobTrigger", EventStore.UserSignupConfirmedRuleProps);
-
-    EventJobBuilder
-      .new(getGameplayDataEventJob, gameplayEB.gameplayEventsBus)
-      .addTrigger("GameplayDataRequestedJobTrigger", EventStore.GetUserDataRuleProps);
   }
 }

@@ -28,7 +28,7 @@ export class SetupNewUserJob extends EventJob {
         USERS_TABLE_NAME: gameplayDDB.tables.users.tableName,
         STATICS_S3_BUCKET_NAME: gameplayStatics.staticsStore.bucketName
       },
-      logRetention: RetentionDays.ONE_WEEK,
+      logRetention: RetentionDays.ONE_DAY,
       initialPolicy: [
         gameplayDDB.policies.listTables
       ]

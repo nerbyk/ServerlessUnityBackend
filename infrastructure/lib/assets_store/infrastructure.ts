@@ -12,6 +12,7 @@ export class GameplayStaticsStore extends Construct {
     this.staticsStore = new Bucket(this, 'GameplayStaticsBucket', {
       versioned: true, // Enable versioning for the bucket
       bucketName: cdk.Stack.of(this).stackName.toLowerCase() + '-statics',
+      removalPolicy: cdk.RemovalPolicy.DESTROY
     });
 
     new BucketDeployment(this, "DeployGameplayStatics", {

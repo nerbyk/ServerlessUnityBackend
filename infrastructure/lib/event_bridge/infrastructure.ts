@@ -31,7 +31,7 @@ export class EventBusik extends Construct {
     new Rule(this, 'GameplayEventsLogRule', {
       eventBus: this.gameplayEventsBus,
       eventPattern: {
-        source: ['custom.gameplay', 'custom.cognito']
+        source: ['gameplay_backend', 'custom.cognito']
       }
     }).addTarget(new CloudWatchLogGroup(gameplayEventsBusLogGroup));
   }

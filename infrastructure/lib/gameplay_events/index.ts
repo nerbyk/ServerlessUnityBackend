@@ -29,8 +29,9 @@ export class EventJobBuilder {
   }
 
   addTrigger(triggerName: string, triggerProps: RuleProps): EventJobBuilder {
-    new Rule(this.jobInstance, triggerName, { eventBus: this.eventBus, ...triggerProps })
-      .addTarget(new LambdaFunction(this.jobInstance.handler));
+    new Rule(this.jobInstance, triggerName, { 
+      eventBus: this.eventBus, ...triggerProps 
+    }).addTarget(new LambdaFunction(this.jobInstance.handler, { retryAttempts: 0 }));
 
     return this;
   }
@@ -52,7 +53,7 @@ export class EventStore {
   public static GetUserDataRuleProps: RuleProps = {
     description: "Get user data",
     eventPattern: {
-      source: ['custom.gameplay_backend'],
+      source: ['gameplay_backend'],
       detailType: ['GET_USER_DATA'],
     }
   }

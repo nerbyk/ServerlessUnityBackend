@@ -1,22 +1,28 @@
-import { RemovalPolicy, Stack } from 'aws-cdk-lib';
+import { Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { WebSocketApi, WebSocketStage } from 'aws-cdk-lib/aws-apigatewayv2';
 import { WebSocketLambdaAuthorizer } from 'aws-cdk-lib/aws-apigatewayv2-authorizers';
 import { WebSocketLambdaIntegration } from 'aws-cdk-lib/aws-apigatewayv2-integrations';
 import { AttributeType, BillingMode, Table } from 'aws-cdk-lib/aws-dynamodb';
 import { Code, Function, Runtime } from 'aws-cdk-lib/aws-lambda';
-import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
+import * as openapix from '@alma-cdk/openapix';
 import { Construct } from 'constructs';
 import path = require('path');
 import { EventBusik } from '../event_bridge/infrastructure';
 import { CognitoAuth } from '../auth/infrastructure';
 import { RetentionDays } from 'aws-cdk-lib/aws-logs';
+import { IdentitySource } from 'aws-cdk-lib/aws-apigateway';
+
+type RestApiFunctions = {
+  getUserData: Function
+}
 
 interface WebSocketApiProps {
   auth: CognitoAuth;
   eventBridge: EventBusik;
+  restApiFunctions: RestApiFunctions;
 }
 
-export class WebhookApi extends Construct {
+export class WebhookAndRestApi extends Construct {
   readonly api: WebSocketApi;
   readonly stage: WebSocketStage;
 
@@ -78,6 +84,29 @@ export class WebhookApi extends Construct {
       webSocketApi,
       autoDeploy: true
     });
+
     this.api = webSocketApi;
+
+    this.buildRestApiOpenapix(props.restApiFunctions, authorizerLambda);
+  }
+
+  buildRestApiOpenapix(restApiFunctions: RestApiFunctions, authorizerFunction: Function) {
+    new openapix.Api(this, 'RestApi', {
+      source: "../gameplay_backend/open_api_schema.yml",
+      paths: {
+        "/user_data": {
+          get: new openapix.LambdaIntegration(this, restApiFunctions.getUserData)
+        }
+      },
+      authorizers: [
+        new openapix.LambdaAuthorizer(this, 'cognito', {
+          fn: authorizerFunction,
+          identitySource: IdentitySource.header('Authorization'),
+          type: 'request',
+          authType: 'custom',
+          resultsCacheTtl: Duration.minutes(5),
+        }),
+      ]
+    })
   }
 }

@@ -1,0 +1,203 @@
+openapi: 3.0.0
+info:
+  title: Gameplay Backend API
+  version: 1.0.0
+paths:
+  /user_data:
+    get:
+      tags: 
+        - User
+      description: Get user data
+      operationId: getUserData
+      responses:
+        '200':
+          description: SUCCESS
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDataResponse'
+  # /entities:
+  #   post:
+  #     tags:
+  #       - Entity
+  #     description: Create a new entity
+  #     operationId: createEntity
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/EntityRequest'
+  #     responses:
+  #       '201':
+  #         description: CREATED
+  #       '422':
+  #         description: UNPROCESSABLE ENTITY
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/UnprocessibleEntityError'
+  #   put:
+  #     tags: 
+  #       - Entity
+  #     security:
+  #       - cognito: []
+  #     description: Update an entity by GUID
+  #     operationId: updateEntity
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/EntityRequest'
+  #     responses:
+  #       '200':
+  #         description: Entity updated
+  #       '422':
+  #         description: UNPROCESSABLE ENTITY
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/UnprocessibleEntityError'
+  #   delete:
+  #     tags: 
+  #       - Entity
+  #     description: Delete an entity by GUID
+  #     operationId: deleteEntity
+  #     responses:
+  #       '204':
+  #         description: Entity deleted
+  #       '422':
+  #         description: UNPROCESSABLE ENTITY
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/UnprocessibleEntityError'
+  # /receipts:
+  #   post:
+  #     tags: 
+  #       - Receipt
+  #     description: Create a new receipt for an entity
+  #     operationId: createReceipt
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/Receipt'
+  #     responses:
+  #       '201':
+  #         description: Receipt created
+  # /receipts/{guid}/next_step:
+    # get:
+    #   tags: 
+    #     - Receipt
+    #   description: Get the next step for a receipt by GUID
+    #   operationId: getNextStep
+    #   parameters:
+    #     - in: path
+    #       name: guid
+    #       required: true
+    #       schema:
+    #         type: string
+    #   responses:
+    #     '200':
+    #       description: OK
+    #     '422':
+    #       description: UNPROCESSABLE ENTITY
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/UnprocessibleEntityError'
+components:
+  schemas:
+    Entity:
+      type: object
+      properties:
+        guid:
+          type: string
+        type:
+          type: string
+        position:
+          type: object
+          properties:
+            x:
+              type: array
+              items:
+                type: number
+            y:
+              type: array
+              items:
+                type: number
+        receipts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Receipt'
+    Items:
+      type: object
+      properties:
+        type:
+          type: string
+        quantity:
+          type: number
+    Receipt:
+      type: object
+      properties:
+        guid:
+          type: string
+        entity_guid:
+          type: string
+        type:
+          type: string
+        state:
+          type: string
+        updated_at:
+          type: string
+          format: date-time
+    UserData: 
+      type: object
+      properties:
+        user_id:
+          type: string
+        entities:
+          type: array
+          items:
+            $ref: '#/components/schemas/Entity'
+        items: 
+          type: array
+          items:
+            $ref: '#/components/schemas/Items'
+    UnprocessibleEntityError: 
+      type: object
+      properties:
+        message:
+          type: string
+          enum:
+            - INSUFFICIENT_RESOURCES
+            - INVALID_REQUEST
+    UserDataResponse:
+      $ref: "#/components/schemas/UserData"
+    EntityRequest:
+      type: object
+      properties:
+        type:
+          type: string
+        position:
+          type: object
+          properties:
+            x:
+              type: array
+              items:
+                type: number
+            y:
+              type: array
+              items:
+                type: number
+  securitySchemes:
+    cognito:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: Using Cognito JWT
+security:
+  - cognito: []

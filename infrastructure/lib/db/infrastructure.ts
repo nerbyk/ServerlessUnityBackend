@@ -1,4 +1,4 @@
-import { CfnOutput, Stack } from 'aws-cdk-lib';
+import { CfnOutput, RemovalPolicy, Stack } from 'aws-cdk-lib';
 import { Table, AttributeType, ProjectionType } from 'aws-cdk-lib/aws-dynamodb';
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
@@ -35,18 +35,21 @@ export class GameplayDDB extends Construct {
     const users = new Table(this, 'Users', {
       partitionKey: { name: 'user_id', type: AttributeType.STRING },
       tableName: Stack.of(this).stackName + '-Users',
+      removalPolicy: RemovalPolicy.DESTROY,
     });
 
     const entitiesReceipts = new Table(this, 'Receipts', {
       partitionKey: { name: 'guid', type: AttributeType.STRING },
       sortKey: { name: 'entity_guid', type: AttributeType.STRING },
       tableName: Stack.of(this).stackName + '-Receipts',
+      removalPolicy: RemovalPolicy.DESTROY,
     });
 
     const items = new Table(this, 'UserItems', {
       partitionKey: { name: 'guid', type: AttributeType.STRING },
       sortKey: { name: 'user_id', type: AttributeType.STRING },
       tableName: Stack.of(this).stackName + '-UserItems',
+      removalPolicy: RemovalPolicy.DESTROY
     });
 
     return { users, entitiesReceipts, items }
