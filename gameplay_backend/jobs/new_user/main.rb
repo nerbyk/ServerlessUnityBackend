@@ -26,17 +26,18 @@ DEFAULT_ITEMS_MAPPING = JSON.parse(
 ENTITY_MAP_SIZE = 101
 
 def build_entities_default_tilemap
-  entities = Array.new(ENTITY_MAP_SIZE) { Array.new(ENTITY_MAP_SIZE) { { type: nil, guid: nil } } }
+  entities = {}
 
   DEFAULT_ENTITY_MAPPING.each do |entity|
     guid = SecureRandom.uuid
 
-    entity[:x].each do |x|
-      entity[:y].each do |y|
-        entities[x][y][:type] = entity[:type]
-        entities[x][y][:guid] = guid
-      end
-    end
+    entities[guid] = {
+      type: entity[:type],
+      position: {
+        x: entity[:x],
+        y: entity[:y]
+      }
+    }
   end
 
   entities

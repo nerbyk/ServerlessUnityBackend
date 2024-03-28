@@ -66,7 +66,7 @@ describe 'Dispatcher' do
       {
         entries: [
           {
-            source: 'custom.gameplay_backend',
+            source: 'gameplay_backend',
             detail_type: "GET_USER_DATA",
             event_bus_name: event_bus_name,
             detail: {

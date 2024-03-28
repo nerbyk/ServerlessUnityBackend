@@ -12,8 +12,8 @@ describe "NewUserLambda" do
   let(:default_entity_mapping) do 
     [
       { type: "tree", x: [1, 2], y: [1, 2] }, 
-      {type: "stone", x: [3], y: [3]}
-    ].to_json 
+      { type: "stone", x: [3], y: [3] }
+    ] 
   end
 
   subject do 
@@ -26,33 +26,31 @@ describe "NewUserLambda" do
     Aws.config[:s3] = {
       stub_responses: {
         get_object: {
-          body: default_entity_mapping
+          body: default_entity_mapping.to_json
         }
       }
     }
   end
 
   around do |&block|
-    ENV['USERS_TABLE_NAME'] = 'users-test'
     ENV['STATICS_S3_BUCKET_NAME'] = 'statics-test'
   
     super(&block)
 
-    ENV.delete('USERS_TABLE_NAME')
     ENV.delete('STATICS_S3_BUCKET_NAME')
   end
-
-  after { User.delete_all }
 
   it "should create new user from s3 json asset" do
     _(subject).must_equal({ statusCode: 200, body: "OK" })
 
     assert created_user
+    assert created_user.user_id == new_user_id
+    assert created_user.entities.count == default_entity_mapping.count
 
-    assert created_user.entities[1][1]["type"] == "tree"
-    assert created_user.entities[1][1]["guid"] == created_user.entities[2][2]["guid"]
+    assert created_user.entities.values[0][:type] == default_entity_mapping[0][:type]
+    assert created_user.entities.values[0][:position] == default_entity_mapping[0].slice(:x, :y)
 
-    assert created_user.entities[3][3]["type"] == "stone"
-    assert created_user.entities[3][3]["guid"] != created_user.entities[1][1]["guid"]
+    assert created_user.entities.values[1][:type] == default_entity_mapping[1][:type]
+    assert created_user.entities.values[1][:position] == default_entity_mapping[1].slice(:x, :y)
   end
 end

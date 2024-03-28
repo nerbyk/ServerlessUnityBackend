@@ -28,7 +28,7 @@ class Dispatcher < ActiveFunction::Base
     ddb: { table_name: ::CONNECTION_TABLE_NAME },
     eb: {
       broadcast_user_data_event: {
-        source: 'custom.gameplay_backend',
+        source: 'gameplay_backend',
         detail_type: "GET_USER_DATA",
         event_bus_name: ::EVENT_BUS_NAME
       }
@@ -98,8 +98,10 @@ class Dispatcher < ActiveFunction::Base
   end
 
   def emmit_get_user_data_event
-    EventBridgeClient.put_events(entries: [broadcast_user_data_event])
-      .tap { |response| ::Log.info "Emmitted EB event: #{response}" }
+    event = [broadcast_user_data_event]
+
+    EventBridgeClient.put_events(entries: event)
+      .tap { |response| ::Log.info "Emmitted EB event: #{response} #{event}" }
   end
 
   def new_connection_ddb_item

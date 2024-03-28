@@ -2,7 +2,7 @@
   "version": "0",
   "id": "pupa-i-lupa-prishli-za-zerplatoy",
   "detail-type": "GET_USER_DATA",
-  "source": "custom.gameplay_backend",
+  "source": "gameplay_backend",
   "account": "12345",
   "time": "2024-03-15T09:13:52Z",
   "region": "eu-central-1",

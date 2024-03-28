@@ -2,12 +2,12 @@
 
 require 'rake'
 require 'rake/testtask'
-require 'dotenv/load'
 
-JOB_DIRS = Dir.glob('jobs/*')
+Rake::Task.define_task(:environment)
 
-environment = ENV['env'] || 'development'
-Dotenv.load(".env.#{environment}")
+namespace :db do
+  require 'dynamoid/tasks'
+end
 
 task :execute_job, [:file_name] do |_t, args|
   job_name = args[:file_name]
@@ -20,13 +20,23 @@ task :execute_job, [:file_name] do |_t, args|
   load job_path
 end
 
-JOB_DIRS.each do |job_dir|
-  Rake::TestTask.new("test_job:#{File.basename(job_dir)}") do |t|
-    t.libs << 'test'
-    t.libs << job_dir
+JOB_DIRS = Dir.glob('jobs/*')
 
-    t.test_files = FileList["test/#{job_dir}/*_test.rb"]
-    t.warning = false
-    t.verbose = true
+namespace :test do
+  task :job, [:job_name] do |_t, args|
+    ENV['ENV'] = 'test'
+    Rake::Task["test:test_job:#{args[:job_name]}"].invoke
   end
+
+
+  JOB_DIRS.each do |job_dir|
+    Rake::TestTask.new("test_job:#{File.basename(job_dir)}") do |t|
+      t.libs << 'test'
+      t.libs << job_dir
+  
+      t.test_files = FileList["test/#{job_dir}/*_test.rb"]
+      t.warning = false
+      t.verbose = true
+    end
+  end  
 end
