@@ -4,7 +4,10 @@ VENDOR_JOBS_DIR := ./vendor/gameplay_backend/jobs
 AWS_TEST_ACCOUNT := ferma-deploy
 
 package_gameplay_backend:
-	cd ${GAMEPLAY_BACKEND_DIR} && rm -rf vendor/bundle && rm .bundle/config && bundle config set --local without 'development test' --path vendor/bundle && bundle install
+	cd ${GAMEPLAY_BACKEND_DIR} && rm -rf vendor/bundle && rm .bundle/config && \
+		bundle config set --local without 'development test' && \
+		bundle config set --local path 'vendor/bundle' && \
+		bundle install
 	rm -rf ${VENDOR_JOBS_DIR} && mkdir -p ${VENDOR_JOBS_DIR}
 	cp -r ${GAMEPLAY_BACKEND_DIR}/assets ./vendor/gameplay_backend
 	cp -r ${LAMBDA_JOBS_DIR}/* ${VENDOR_JOBS_DIR}
