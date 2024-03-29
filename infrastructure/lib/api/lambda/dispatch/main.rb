@@ -51,7 +51,6 @@ class Dispatcher < ActiveFunction::Base
 
   def connect
     create_user_connection
-    emmit_get_user_data_event
 
     render status: 200, json: "OK", head: {}
   rescue => e
@@ -97,23 +96,12 @@ class Dispatcher < ActiveFunction::Base
       .tap { |it| ::Log.info("Connection deleted: #{it.inspect}") }
   end
 
-  def emmit_get_user_data_event
-    event = [broadcast_user_data_event]
-
-    EventBridgeClient.put_events(entries: event)
-      .tap { |response| ::Log.info "Emmitted EB event: #{response} #{event}" }
-  end
-
   def new_connection_ddb_item
     CONNECTION_OPTIONS[:ddb].merge(item: user_connection_params)
   end
 
   def delete_connection_ddb_item
     CONNECTION_OPTIONS[:ddb].merge(key: user_connection_params.slice("connectionId"))
-  end
-
-  def broadcast_user_data_event
-    CONNECTION_OPTIONS[:eb][:broadcast_user_data_event].merge(detail: user_connection_params.to_json)
   end
 
   def user_connection_params

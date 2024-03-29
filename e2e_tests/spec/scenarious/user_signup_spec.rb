@@ -25,8 +25,6 @@ describe 'User Registration' do
       expect(cognito_user.user_status).to eq('UNCONFIRMED')
 
       AwsSdkHelpers::Cognito.confirm_user(username: 'test_user@example.com') # subject, not allowed by context hooks
-
-      sleep(5)
     end
 
     after(:all) do

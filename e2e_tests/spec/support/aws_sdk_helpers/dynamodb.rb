@@ -11,7 +11,16 @@ module AwsSdkHelpers
       },
       connection: {
         table_name: ENV.fetch('WEBSOCKET_CONNECTIONS_TABLE_NAME'),
-        key: :connection_id
+        key: :connectionId
+      },
+      connection_user_id_index: {
+        table_name: ENV.fetch('WEBSOCKET_CONNECTIONS_TABLE_NAME'),
+        index_name: 'userIdIndex',
+        key_condition_expression: 'userId = :user_id',
+        expression_attribute_values: {
+          ':user_id' => nil
+        },
+        limit: 1
       }
     }
 
@@ -27,10 +36,11 @@ module AwsSdkHelpers
       Client.get_item(table_name:, key: { key => by })
     end
 
-    def self.find_by(table, key)
-      SCHEMAS.fetch(table) => { table_name: }
+    def self.find_by_index(table, index_name, value)
+      opts = SCHEMAS.fetch(:"#{table}_#{index_name}_index") 
+      opts[:expression_attribute_values][":#{index_name}"] = value
 
-      Client.get_item(table_name:, key:)
+      Client.query(opts)
     end
   end
 end
